@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile</title>
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+</head>
+<body>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="profile_picture">Profile picture</label>
+      <input type="file" name="profile_picture" id="profile_picture" class="form-control" accept="image/*">
+    </div>
+    {% if form.instance.profile_picture %}
+      <img src="{{form.instance.profile_picture.url}}" alt="Profile Picture" class="img-thumbnail mt-2 rounded-circle" style="max-width: 200px;">
+    {% else %}
+      <img src="{% static 'images/default.png' %}" alt="Default Profile Picture" class="img-thumbnail mt-2 rounded-circle" style="max-width: 200px;">
+    {% endif %} <br>
+    <label for="first_name">First Name</label>
+    {{form.first_name}} <br>
+    <label for="last_name">Last Name</label>
+    {{form.last_name}} <br>
+    <button type="submit" class="btn btn-outline-primary">Update</button>
+  </form>
+
+</body>
+</html>

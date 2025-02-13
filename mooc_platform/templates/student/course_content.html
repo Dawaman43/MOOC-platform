@@ -1,0 +1,191 @@
+{% load static custom_filters %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ course.title }} - Course Content</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+        }
+
+        .course-header {
+            background-color: #007bff;
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .course-header h1 {
+            margin-bottom: 10px;
+        }
+
+        .course-header p {
+            font-size: 1.1rem;
+        }
+
+        .progress-bar {
+            background-color: #f3f3f3;
+            border-radius: 5px;
+            height: 20px;
+            margin-top: 20px;
+        }
+
+        .progress-bar-fill {
+            background-color: #28a745;
+            height: 100%;
+            border-radius: 5px;
+        }
+
+        .content-section {
+            margin-top: 30px;
+        }
+
+        .content-section h3 {
+            margin-bottom: 15px;
+        }
+
+        .content-section ul {
+            padding-left: 20px;
+        }
+
+        .content-section ul li {
+            margin: 8px 0;
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .files-section {
+            margin-top: 40px;
+        }
+
+        .files-section h3 {
+            margin-bottom: 15px;
+        }
+
+        .files-section ul {
+            list-style-type: none;
+        }
+
+        .files-section li {
+            margin: 8px 0;
+            font-size: 1rem;
+        }
+
+        .files-section a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        .files-section a:hover {
+            text-decoration: underline;
+        }
+
+        .dashboard-button {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .dashboard-button a {
+            text-decoration: none;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1.1rem;
+        }
+
+        .dashboard-button a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- Course Header -->
+        <div class="course-header">
+            <h1>{{ course.title }}</h1>
+            <p><strong>Instructor:</strong> {{ course.instructor.first_name }} {{ course.instructor.last_name }}</p>
+            <p>{{ course.description }}</p>
+            <p><strong>Price:</strong> ${{ course.price }}</p>
+            <div class="instructor-info">
+                {% if course.instructor.profile_picture %}
+                    <img src="{{ course.instructor.profile_picture.url }}" alt="Instructor Picture" width="100">
+                {% else %}
+                    <img src="{% static 'images/default.png' %}" alt="Instructor Picture" width="100">
+                {% endif %}
+                <p>Instructor: {{ course.instructor.first_name }} {{ course.instructor.last_name }}</p>
+            </div>
+        </div>
+
+        <!-- Course Progress Bar -->
+
+      <div class="progress-bar">
+        {% with total_content=course.contents.all|length %}
+            {% with completed_content=0 %}
+                {% for content in course.contents.all %}
+                    {% if progress_dict|get_item:content.id %}
+                        {% with completed_content=completed_content|add:1 %}
+                        {% endwith %}
+                    {% endif %}
+                {% endfor %}
+            {% endwith %}
+        {% endwith %}
+      </div>
+      <p>{{ completed_content }} of {{ total_content }} contents completed</p>
+
+        <!-- Course Content -->
+        <div class="content-section">
+            <h3>Course Content:</h3>
+            <ul>
+                {% if course.contents.all %}
+                    {% for content in course.contents.all %}
+                        <li>
+                            {{ content.title }} - <strong>{{ content.content_type }}</strong>
+                            {% if progress_dict|get_item:content.id %}
+                                <span class="badge bg-success">Completed</span>
+                            {% else %}
+                                <span class="badge bg-warning">Not Completed</span>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <li>No content available for this course.</li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <!-- Files Section -->
+        <div class="files-section">
+            <h3>Course Files:</h3>
+            <ul>
+                {% if course.files.all %}
+                    {% for file in course.files.all %}
+                        <li><a href="{{ file.file.url }}" download>{{ file.name }}</a></li>
+                    {% endfor %}
+                {% else %}
+                    <li>No files available for this course.</li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <!-- Dashboard Button -->
+        <div class="dashboard-button">
+            <a href="{% url 'student_dashboard' %}">Back to Dashboard</a>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

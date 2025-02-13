@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Courses</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> <!-- FontAwesome -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .course-card {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .course-card h4 {
+            color: #007bff;
+        }
+
+        .course-card p {
+            color: #555;
+        }
+
+        .enroll-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .enroll-btn:hover {
+            background-color: #218838;
+        }
+
+        .course-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .container {
+            padding-top: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 class="my-4">Available Courses</h1>
+    
+    <div class="course-list">
+        {% for course in courses %}
+        <div class="course-card">
+            <h4>{{ course.title }}</h4>
+            <p>{{ course.description|truncatewords:20 }}</p>
+            <a href="{% url 'student_enrollment' course.id %}" class="enroll-btn">Enroll</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+</body>
+</html>

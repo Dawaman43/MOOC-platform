@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <style>
+    .form-div{
+      height: 50vh;
+    }
+
+    .form-content{
+      height: 100%;
+    }
+    .errorlist{
+      list-style-type: none;
+      color: red;
+    }
+
+
+  </style>
+</head>
+<body>
+  <h1 class="text-center">MOOC</h1>
+  <div class="container ">
+
+    <div class="col-md-6 mx-auto border border-primary p-2 shadow rounded form-div d-flex flex-column ">
+      <h2 class="text-center">Login</h2>
+      <form method="post" class="h-100 d-flex flex-column flex-grow-1 ">
+        {% csrf_token %}
+        <ul class="messages">
+          {% for message in messages %}
+            <li class="list-unstyled" style="color:red">
+              {{message}}
+            </li>
+          {% endfor %}
+        </ul>
+
+        <label for="username">Username: </label>
+        {{form.username}}<br>
+        <label for="password">password: </label>
+        {{form.password}} <br>
+  
+        
+        <div class="text-center">
+          <button type="submit" class="text-center btn btn-outline-success">Login</button>
+        </div>
+        
+        <div class="">
+          <a href="{% url 'register' %}" class="text-decoration-none">If you don't have an account, register here</a>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+</body>
+</html>

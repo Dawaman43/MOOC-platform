@@ -1,0 +1,237 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ course.title }} - Course Detail</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> <!-- FontAwesome Icons -->
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+        }
+
+        .course-header {
+            background-color: #007bff;
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .course-header h1 {
+            margin-bottom: 10px;
+        }
+
+        .course-header p {
+            font-size: 1.1rem;
+        }
+
+        .instructor-info {
+            margin-top: 20px;
+        }
+
+        .instructor-info img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            margin-right: 15px;
+        }
+
+        .instructor-info h3 {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .instructor-info p {
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        .content-section {
+            margin-top: 30px;
+        }
+
+        .content-section h3 {
+            margin-bottom: 15px;
+        }
+
+        .content-section ul {
+            padding-left: 20px;
+        }
+
+        .content-section ul li {
+            margin: 8px 0;
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .enroll-section {
+            margin-top: 40px;
+        }
+
+        .enroll-button {
+            background-color: #28a745;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            width: 100%;
+        }
+
+        .enroll-button:hover {
+            background-color: #218838;
+        }
+
+        .review-section {
+            margin-top: 40px;
+        }
+
+        .review {
+            border-bottom: 1px solid #ddd;
+            padding: 15px 0;
+        }
+
+        .review p {
+            margin: 5px 0;
+        }
+
+        .empty-reviews {
+            text-align: center;
+            color: #888;
+            font-style: italic;
+        }
+
+        .review-form {
+            margin-top: 30px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .review-form h3 {
+            margin-bottom: 20px;
+        }
+
+        .review-form button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .review-form button:hover {
+            background-color: #218838;
+        }
+
+        .review-form .form-control {
+            margin-bottom: 15px;
+        }
+
+        .review-form .form-group label {
+            font-weight: bold;
+        }
+
+        .review-form .form-control:focus {
+            border-color: #007bff;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- Course Header -->
+        <div class="course-header">
+            <h1>{{ course.title }}</h1>
+            <p><strong>Instructor:</strong> {{ course.instructor.first_name }} {{ course.instructor.last_name }}</p>
+            <p>{{ course.description }}</p>
+            <p><strong>Price:</strong> ${{ course.price }}</p>
+
+            <!-- Instructor Information -->
+            <div class="instructor-info">
+              {% if course.instructor.profile_picture %}
+                <img src="{{ course.instructor.profile_picture.url }}" alt="Instructor Picture">
+              {% else %}
+                <img src="{% static 'images/default.png' %}" alt="Instructor Picture">
+              {% endif %}
+              <p>Instructor: {{ course.instructor.first_name }} {{ course.instructor.last_name }}</p>
+            </div>
+        </div>
+
+        <!-- Course Content -->
+        <div class="content-section">
+            <h3>Course Content:</h3>
+            <ul>
+                {% for content in course.contents.all %}
+                    <li>{{ content.title }} - <strong>{{ content.content_type }}</strong></li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Enroll Button -->
+        <div class="enroll-section">
+            {% if user.is_authenticated %}
+                {% if user in course.enrolled_students.all %}
+                    <button class="btn btn-success" disabled>Enrolled</button>
+                {% else %}
+                    <a href="{% url 'enroll_course' course.id %}" class="btn enroll-button">Enroll Now</a>
+                {% endif %}
+            {% else %}
+                <p>You need to log in to enroll in this course.</p>
+            {% endif %}
+        </div>
+
+        <!-- Reviews Section -->
+        <div class="review-section">
+            <h3>Reviews:</h3>
+            {% for review in reviews %}
+                <div class="review">
+                    <p><strong>{{ review.student.username }}</strong> - <span>Rating: {{ review.rating }} Stars</span></p>
+                    <p>{{ review.comment }}</p>
+                </div>
+            {% empty %}
+                <p class="empty-reviews">No reviews yet. Be the first to leave a review!</p>
+            {% endfor %}
+        </div>
+
+        <!-- Leave a Review Form -->
+        {% if user.is_authenticated %}
+        <div class="review-form">
+            <h3>Leave a Review:</h3>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="rating">Rating:</label>
+                    <select name="rating" class="form-control" id="rating">
+                        <option value="1">1 Star</option>
+                        <option value="2">2 Stars</option>
+                        <option value="3">3 Stars</option>
+                        <option value="4">4 Stars</option>
+                        <option value="5">5 Stars</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="comment">Your Review:</label>
+                    <textarea name="comment" class="form-control" placeholder="Write your review..." rows="5"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit Review</button>
+            </form>
+        </div>
+        {% else %}
+            <p>You need to log in to leave a review.</p>
+        {% endif %}
+    </div>
+
+</body>
+
+</html>

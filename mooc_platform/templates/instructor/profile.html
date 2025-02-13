@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile</title>
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+    }
+    .profile-container {
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      margin: 50px auto;
+    }
+    .profile-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .profile-header h1 {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+    }
+    .profile-header img {
+      border-radius: 50%;
+      max-width: 150px;
+      border: 5px solid #007bff;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      font-weight: bold;
+    }
+    .btn-custom {
+      background-color: #007bff;
+      color: white;
+      border: none;
+    }
+    .btn-custom:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container profile-container">
+    <div class="profile-header">
+      <h1>Update Your Profile</h1>
+      <!-- Display Profile Picture -->
+      {% if form.instance.profile_picture %}
+        <img src="{{ form.instance.profile_picture.url }}" alt="Profile Picture" class="img-thumbnail mt-2">
+      {% else %}
+        <img src="{% static 'images/default.png' %}" alt="Default Profile Picture" class="img-thumbnail mt-2">
+      {% endif %}
+    </div>
+
+    <!-- Profile Update Form -->
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="profile_picture">Profile Picture</label>
+        <input type="file" name="profile_picture" id="profile_picture" class="form-control" accept="image/*">
+      </div>
+
+      <div class="form-group">
+        <label for="first_name">First Name</label>
+        {{ form.first_name }}
+      </div>
+
+      <div class="form-group">
+        <label for="last_name">Last Name</label>
+        {{ form.last_name }}
+      </div>
+
+      <div class="form-group">
+        <label for="bio">Bio</label>
+        {{ form.bio}}
+      </div>
+
+      <button type="submit" class="btn btn-custom btn-block">Update Profile</button>
+    </form>
+  </div>
+</body>
+</html>
