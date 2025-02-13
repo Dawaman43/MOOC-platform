@@ -1,0 +1,74 @@
+/* Custom styles for the registration page */
+body {
+  background-color: #f4f6f9; /* Light background for the page */
+  font-family: 'Arial', sans-serif;
+}
+
+.container {
+  margin-top: 50px;
+}
+
+.card {
+  border-radius: 15px;  /* Round corners */
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);  /* Soft shadow effect */
+}
+
+.card-header {
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+h3 {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.form-group label {
+  font-weight: bold;
+  color: #555;
+}
+
+.form-control {
+  border-radius: 8px; /* Rounded input fields */
+  box-shadow: none; /* Remove inner shadow */
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc; /* Light border for input fields */
+}
+
+button[type="submit"] {
+  font-size: 16px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+.text-center a {
+  color: #007bff;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.text-center a:hover {
+  text-decoration: underline;
+}
+
+.card-body {
+  background-color: #ffffff;
+  padding: 30px;
+}
+
+.text-center {
+  font-size: 16px;
+}

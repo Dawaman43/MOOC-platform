@@ -1,0 +1,162 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ course.title }} - Course Detail</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+        }
+
+        .course-header {
+            background-color: #007bff;
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .course-header h1 {
+            margin-bottom: 10px;
+        }
+
+        .course-header p {
+            font-size: 1.1rem;
+        }
+
+        .progress-bar {
+            background-color: #f3f3f3;
+            border-radius: 5px;
+            height: 20px;
+            margin-top: 20px;
+        }
+
+        .progress-bar-fill {
+            background-color: #28a745;
+            height: 100%;
+            border-radius: 5px;
+        }
+
+        .content-section {
+            margin-top: 30px;
+        }
+
+        .content-section h3 {
+            margin-bottom: 15px;
+        }
+
+        .content-section ul {
+            padding-left: 20px;
+        }
+
+        .content-section ul li {
+            margin: 8px 0;
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .files-section {
+            margin-top: 40px;
+        }
+
+        .files-section h3 {
+            margin-bottom: 15px;
+        }
+
+        .files-section ul {
+            list-style-type: none;
+        }
+
+        .files-section li {
+            margin: 8px 0;
+            font-size: 1rem;
+        }
+
+        .files-section a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        .files-section a:hover {
+            text-decoration: underline;
+        }
+
+        .btn-back {
+            margin-top: 20px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- Course Header -->
+        <div class="course-header">
+            <h1>{{ course.title }}</h1>
+            <p><strong>Instructor:</strong> {{ course.instructor.first_name }} {{ course.instructor.last_name }}</p>
+            <p>{{ course.description }}</p>
+            <p><strong>Price:</strong> ${{ course.price }}</p>
+            <div class="instructor-info">
+                {% if course.instructor.profile_picture %}
+                    <img src="{{ course.instructor.profile_picture.url }}" alt="Instructor Picture" width="100" height="100">
+                {% else %}
+                    <img src="{% static 'images/default.png' %}" alt="Instructor Picture" width="100" height="100">
+                {% endif %}
+                <p>Instructor: {{ course.instructor.first_name }} {{ course.instructor.last_name }}</p>
+            </div>
+        </div>
+
+        <!-- Course Content -->
+        <div class="content-section">
+            <h3>Course Content:</h3>
+            <ul>
+                {% for content in course.content.all %}
+                    <li>
+                        <strong>{{ content.title }}</strong> - <em>{{ content.content_type }}</em>
+                        {% if content.file %}
+                            <br><a href="{{ content.file.url }}" download>Download File</a>
+                        {% elif content.video_url %}
+                            <br><a href="{{ content.video_url }}" target="_blank">Watch Video</a>
+                        {% else %}
+                            <br>No file or video available
+                        {% endif %}
+                    </li>
+                {% empty %}
+                    <li>No course content available.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Files Section -->
+        <div class="files-section">
+            <h3>Course Files:</h3>
+            <ul>
+                {% for content in course.content.all %}
+                    {% if content.file %}
+                        <li><a href="{{ content.file.url }}" download>{{ content.title }}</a></li>
+                    {% else %}
+                        <li>{{ content.title }} (No file attached)</li>
+                    {% endif %}
+                {% empty %}
+                    <li>No course files available.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Back to Dashboard Button -->
+        <a href="{% url 'instructor_dashboard' %}" class="btn btn-primary btn-back">Back to Dashboard</a>
+
+    </div>
+
+</body>
+
+</html>

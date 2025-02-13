@@ -1,0 +1,171 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard</title>
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>  <!-- FontAwesome Icons -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+    }
+    .dashboard-header {
+      display: flex;
+      align-items: center;
+      background-color: #007bff;
+      padding: 20px;
+      color: white;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    .dashboard-header i {
+      font-size: 30px;
+      margin-right: 15px;
+    }
+    .dashboard-links a {
+      display: block;
+      padding: 10px;
+      margin: 5px 0;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      text-align: center;
+      border-radius: 5px;
+    }
+    .dashboard-links a:hover {
+      background-color: #0056b3;
+    }
+    .course-card {
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 10px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .course-card h4 {
+      margin-bottom: 10px;
+    }
+    .enroll-btn {
+      background-color: #28a745;
+      color: white;
+      padding: 10px 15px;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+    .enroll-btn:hover {
+      background-color: #218838;
+    }
+    .course-list {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .course-card {
+      flex: 1 1 calc(33% - 20px);
+      margin: 10px;
+      max-width: 30%;
+    }
+    .logout-btn {
+      background-color: #dc3545;
+      color: white;
+      padding: 10px 15px;
+      text-decoration: none;
+      border-radius: 5px;
+      margin-top: 20px;
+    }
+    .logout-btn:hover {
+      background-color: #c82333;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+      <i class="fas fa-user-graduate"></i>
+      <h1>Welcome, {{ request.user.first_name }}!</h1>
+    </div>
+
+    <!-- Statistics -->
+    <div class="row mb-4">
+      <div class="col-4">
+        <div class="alert alert-info">
+          <h4>Total Courses Enrolled</h4>
+          <p>{{ stats.total_courses }}</p>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="alert alert-warning">
+          <h4>Average Course Rating</h4>
+          <p>{{ stats.average_rating|floatformat:2 }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logout -->
+    
+    <!-- Navigation Links -->
+    <div class="dashboard-links mt-4">
+      <a href="{% url 'profile' %}"><i class="fas fa-user-edit"></i> Edit Profile</a>
+      <a href="{% url 'course_list' %}"><i class="fas fa-book"></i> View All Courses</a>
+    </div>
+    
+    <!-- Enrolled Courses -->
+    <h3>Your Enrolled Courses</h3>
+    <div class="course-list">
+      {% for course in enrolled_courses %}
+      <div class="course-card">
+          <div>
+            <h4>{{ course.title }}</h4>
+            <p>{{ course.description|truncatewords:15 }}</p>
+          </div>
+          <a href="{% url 'course_detail' course.id %}" class="enroll-btn">Go to Course</a>
+        </div>
+      {% empty %}
+        <p>You are not enrolled in any courses yet.</p>
+        {% endfor %}
+      </div>
+      
+      <!-- Featured Courses -->
+      <h3>Featured Courses</h3>
+    <div class="course-list">
+      {% for course in featured_courses %}
+      <div class="course-card">
+        <div>
+          <h4>{{ course.title }}</h4>
+          <p>{{ course.description|truncatewords:15 }}</p>
+        </div>
+        <a href="{% url 'student_enrollment' course.id %}" class="enroll-btn">Enroll</a>
+      </div>
+      {% empty %}
+      <p>No featured courses available.</p>
+      {% endfor %}
+    </div>
+    
+    <!-- Available Courses -->
+    <h3>Available Courses</h3>
+    <div class="course-list">
+      {% for course in available_courses %}
+        <div class="course-card">
+          <div>
+            <h4>{{ course.title }}</h4>
+            <p>{{ course.description|truncatewords:15 }}</p>
+          </div>
+          <a href="{% url 'student_enrollment' course.id %}" class="enroll-btn">Enroll</a>
+        </div>
+      {% empty %}
+      <p>No courses available to enroll.</p>
+      {% endfor %}
+    </div>
+    
+    <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+  </div>
+
+</body>
+</html>

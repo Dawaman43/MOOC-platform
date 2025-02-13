@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enroll in Course</title>
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+    }
+    .enroll-header {
+      background-color: #007bff;
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    .enroll-header h1 {
+      margin-bottom: 10px;
+    }
+    .enroll-details {
+      margin-top: 30px;
+    }
+    .enroll-btn {
+      background-color: #28a745;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+    .enroll-btn:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Enrollment Confirmation -->
+    <div class="enroll-header">
+      <h1>You are about to enroll in: {{ course.title }}</h1>
+      <p>{{ course.description }}</p>
+      <p>Price: ${{ course.price }}</p>
+    </div>
+
+    <div class="enroll-details">
+      <p>Do you wish to proceed with the enrollment?</p>
+      <a href="{% url 'enroll_course' course.id %}" class="enroll-btn">Yes, Enroll Now</a>
+      <a href="{% url 'course_list' %}" class="btn btn-secondary">Cancel</a>
+    </div>
+  </div>
+
+</body>
+</html>

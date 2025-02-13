@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #007bff, #6c757d);
+            color: #fff;
+        }
+
+        .container {
+            text-align: center;
+            padding: 80px 0;
+        }
+
+        .hero-section {
+            margin-top: 50px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 60px 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-section h1 {
+            font-size: 3rem;
+            font-weight: bold;
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+            margin: 20px 0;
+        }
+
+        .cta-button {
+            margin-top: 40px;
+            padding: 15px 30px;
+            background-color: #28a745;
+            color: white;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background-color: #218838;
+        }
+
+        .feature-icons {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+            text-align: center;
+          
+        }
+
+        .feature-icons .icon {
+            background-color: #fff;
+            color: #007bff;
+            padding: 25px;
+            border-radius: 50%;
+            width: 90px;
+            height: 90px;
+            font-size: 2.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 10px;
+        }
+
+        .feature-icons .icon:hover {
+            transform: scale(1.2);
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+        }
+
+        .feature-icons p {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #343a40;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .footer {
+            margin-top: 60px;
+            background-color: #343a40;
+            color: #fff;
+            padding: 30px 0;
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .footer .social-icons {
+            margin-top: 20px;
+        }
+
+        .footer .social-icons a {
+            margin: 0 15px;
+            color: #fff;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer .social-icons a:hover {
+            color: #007bff;
+        }
+
+        @media (max-width: 768px) {
+            .feature-icons {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .cta-button {
+                font-size: 1.1rem;
+                padding: 12px 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Hero Section -->
+    <div class="container hero-section">
+        <h1>Welcome Home!</h1>
+        <p>Your journey to success begins here. Explore, learn, and grow with us.</p>
+        <button class="cta-button" onclick="window.location.href='{% url 'register' %}'">Get Started</button> <!-- Register URL from accounts.urls -->
+    </div>
+
+    <!-- Features Section -->
+    <div class="container feature-icons">
+      <div class="d-flex flex-column">
+        <div class="icon">
+          <i class="fas fa-cogs"></i>
+        </div>
+        <p>Tools</p>
+      </div>
+      <div class="d-flex flex-column">
+        <div class="icon">
+          <i class="fas fa-graduation-cap"></i>
+        </div>
+        <p>Courses</p>
+      </div>
+      <div class="d-flex flex-column">
+        <div class="icon">
+          <i class="fas fa-users"></i>
+        </div>
+        <p>Community</p>       
+      </div>
+      <div class="d-flex flex-column">
+        <div class="icon">
+          <i class="fas fa-trophy"></i>
+        </div>
+        <p>Achievements</p>       
+      </div>
+</div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="container text-center">
+            <p>&copy; 2025 MOOC | All Rights Reserved</p>
+            <div class="social-icons">
+                <a href="#" class="fab fa-facebook text-decoration-none"></a>
+                <a href="#" class="fab fa-twitter text-decoration-none"></a>
+                <a href="#" class="fab fa-linkedin text-decoration-none"></a>
+                <a href="#" class="fab fa-instagram text-decoration-none"></a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

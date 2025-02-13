@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Instructor Dashboard</title>
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>  <!-- Chart.js for graphs -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+    }
+    .dashboard-header {
+      display: flex;
+      align-items: center;
+      background-color: #007bff;
+      padding: 20px;
+      color: white;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    .dashboard-header i {
+      font-size: 30px;
+      margin-right: 15px;
+    }
+    .dashboard-links a {
+      display: block;
+      padding: 10px;
+      margin: 5px 0;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      text-align: center;
+      border-radius: 5px;
+    }
+    .dashboard-links a:hover {
+      background-color: #0056b3;
+    }
+    .logout-button {
+      background-color: #dc3545; /* Red color */
+    }
+    .logout-button:hover {
+      background-color: #c82333;
+    }
+    canvas {
+      max-width: 600px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+      <i class="fas fa-chalkboard-teacher"></i>  <!-- Instructor Icon -->
+      <h1>Welcome, {{ request.user.first_name }}!</h1>
+    </div>
+
+    <!-- Navigation Links -->
+    <div class="dashboard-links">
+      <a href="{% url 'profile' %}"><i class="fas fa-user-edit"></i> Edit Profile</a>
+      <a href="{% url 'course' %}"><i class="fas fa-book"></i> Courses</a>
+      <a href="{% url 'enrolled_students' %}"><i class="fas fa-users"></i> Enrolled Students</a>
+      <a href="#"><i class="fas fa-chart-line"></i> Performance</a>
+      <a href="{% url 'logout' %}" class="logout-button"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+
+    <!-- Chart Section -->
+    <h3>Student Enrollment Graph</h3>
+    <canvas id="studentChart"></canvas>
+  </div>
+
+  <!-- Chart.js Script -->
+  <script>
+    var ctx = document.getElementById('studentChart').getContext('2d');
+    var studentChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ["Course 1", "Course 2", "Course 3", "Course 4"],
+            datasets: [{
+                label: 'Number of Students',
+                data: [30, 50, 40, 20],  // Example data, replace with actual data
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+  </script>
+
+  <!-- FontAwesome for Icons -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+</body>
+</html>
